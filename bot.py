@@ -110,7 +110,7 @@ async def userinfo(ctx, member : discord.Member = None):
     await ctx.send(embed = embed)
     
 @client.command()
-async def avatar(ctx):
+async def avatar(ctx, member : discord.Member = None):
     embed = discord.Embed(
         title = 'Avatar',
         colour = member.colour
