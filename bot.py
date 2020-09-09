@@ -28,6 +28,8 @@ async def _8ball(ctx, *, question):
     responses = ['As I see it, yes.',
                  'Ask again later.',
                  'Better not tell you now.',
+                 'Of course.',
+                 'Absolutely.',
                  'Cannot predict now.',
                  'Concentrate and ask again.',
                  'Don’t count on it.',
