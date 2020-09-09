@@ -116,8 +116,7 @@ async def avatar(ctx, member : discord.Member = None):
         colour = member.colour
     )
     
-    embed.set_author(name = f'{member}')
-    embed.set_thumbnail(url = member.avatar_url)
+    embed.set_author(name = f'{member}', icon_url = member.avatar_url)
     embed.set_image(url = member.avatar_url)
     
     await ctx.send(embed = embed)
