@@ -122,11 +122,11 @@ async def avatar(ctx, member : discord.Member = None):
     await ctx.send(embed = embed)
 
 
-@client.command()
+'''@client.command()
 async def help(ctx):
     embed = discord.Embed(
         title = 'List of all Commands',
-        colour = discord.Colour.purple()
+        colour = discord.Colour.purple()'''
     )   
     
     embed.set_thumbnail(url = 'https://cdn.discordapp.com/attachments/750060115578716212/752431094934142996/Drib8314_rectangle.jpg')
