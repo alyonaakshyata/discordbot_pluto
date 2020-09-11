@@ -141,6 +141,5 @@ async def help(ctx):
 
 
     await ctx.send(embed=embed)
-    await client.add_reaction("😮")
 
 client.run('NzQ1NzA3ODAwNTcwNjI2MTQ5.Xz1sgg.7drNBQmVg1eyrKD2F_WESEv3Q3k')
