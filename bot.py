@@ -148,12 +148,12 @@ async def chng_pr():
     await bot.wait_until_ready()
 
     statuses = ['.help', 'Being a good bot',
-                'Having fun', 'Playing with Softie', 
-                'Playing with Corvus', 'Playing with 19Stars', 
-                'Playing with Jelly', 'Playing with Lexii', 
-                'Playing with Gangu', 'Playing with ASM',
-                'Playing with Triggered', 'Playing with Toxic',
-                'Playing with Notty Bot']
+                'Having fun', 'with Softie', 
+                'with Corvus', 'with 19Stars', 
+                'with Jelly', 'with Lexii', 
+                'with Gangu', 'with ASM',
+                'with Triggered', 'with Toxic',
+                'with Notty Bot']
 
     while not bot.is_closed():
         status = random.choice(statuses)
