@@ -1,6 +1,7 @@
 import discord
 import random
 from discord.ext import commands
+import asyncio
 
 client = commands.Bot(command_prefix = '.')
 
