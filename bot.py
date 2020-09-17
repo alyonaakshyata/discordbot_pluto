@@ -152,7 +152,7 @@ async def chng_pr():
                 'Playing with Corvus', 'Playing with 19Stars', 
                 'Playing with Jelly', 'Playing with Lexii', 
                 'Playing with Gangu', 'Playing with ASM',
-                'Playing with Triggered', 'Playing with Toxic'
+                'Playing with Triggered', 'Playing with Toxic',
                 'Playing with Notty Bot']
 
     while not bot.is_closed():
