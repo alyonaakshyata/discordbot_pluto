@@ -141,5 +141,20 @@ async def help(ctx):
 
 
     await ctx.send(embed=embed)
+   
+
+async def chng_pr():
+    await bot.wait_until_ready()
+
+    statuses = ['.help', 'Being a good bot', 'Having fun', 'Playing with Softie']
+
+    while not bot.is_closed():
+        status = random.choice(statuses)
+
+        await bot.change_presence(activity = discord.Game(status))
+
+        await asyncio.sleep(15)
+
+bot.loop.create_task(chng_pr())
 
 client.run('NzQ1NzA3ODAwNTcwNjI2MTQ5.Xz1sgg.7drNBQmVg1eyrKD2F_WESEv3Q3k')
