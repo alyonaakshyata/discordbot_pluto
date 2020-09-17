@@ -3,28 +3,28 @@ import random
 from discord.ext import commands
 import asyncio
 
-client = commands.Bot(command_prefix = '.')
+bot = commands.Bot(command_prefix = '.')
 
-client.remove_command('help')
+bot.remove_command('help')
 
-@client.event
+@bot.event
 async def on_ready():
     print('Bot is ready.')
 
-@client.event
+@bot.event
 async def on_member_join(member):
     print(f'{member} has joined a server.')
 
-@client.event
+@bot.event
 async def on_member_remove(member):
     print(f'{member} has left a server.')
 
-@client.command()
+@bot.command()
 async def ping(ctx):
-    await ctx.send(f'Pong! {round(client.latency * 1000)}ms')
+    await ctx.send(f'Pong! {round(bot.latency * 1000)}ms')
 
 
-@client.command(aliases = ['8ball', 'test'])
+@bot.command(aliases = ['8ball', 'test'])
 async def _8ball(ctx, *, question):
     responses = ['As I see it, yes.',
                  'Ask again later.',
@@ -51,20 +51,20 @@ async def _8ball(ctx, *, question):
                  'You may rely on it.']
     await ctx.send(f'Question: {question}\nAnswer: {random.choice(responses)}')
 
-@client.command()
+@bot.command()
 async def clear(ctx, amount = 5):
     await ctx.channel.purge(limit = amount)
 
-@client.command()
+@bot.command()
 async def kick(ctx, member : discord.Member, *, reason = None):
     await member.kick(reason=reason)
 
-@client.command()
+@bot.command()
 async def ban(ctx, member : discord.Member, *, reason = None):
     await member.ban(reason=reason)
     await ctx.send(f'Banned {member.mention}')
 
-@client.command()
+@bot.command()
 async def unban(ctx, *, member):
     banned_users = await ctx.guild.bans()
     member_name, member_discriminator = member.split('#')
@@ -77,7 +77,7 @@ async def unban(ctx, *, member):
             await ctx.send(f'Unbanned {user.mention}')
             return
 
-@client.command(aliases=['ui','Userinfo','UserInfo','UI'])
+@bot.command(aliases=['ui','Userinfo','UserInfo','UI'])
 async def userinfo(ctx, member : discord.Member = None):
 
     member = ctx.author if not member else member
@@ -110,7 +110,7 @@ async def userinfo(ctx, member : discord.Member = None):
 
     await ctx.send(embed = embed)
     
-@client.command()
+@bot.command()
 async def avatar(ctx, member : discord.Member = None):
     
     member = ctx.author if not member else member
@@ -126,7 +126,7 @@ async def avatar(ctx, member : discord.Member = None):
     await ctx.send(embed = embed)        
     
 
-@client.command()
+@bot.command()
 async def help(ctx):
     embed = discord.Embed(
         title = 'List of all Commands',
@@ -158,4 +158,4 @@ async def chng_pr():
 
 bot.loop.create_task(chng_pr())
 
-client.run('NzQ1NzA3ODAwNTcwNjI2MTQ5.Xz1sgg.7drNBQmVg1eyrKD2F_WESEv3Q3k')
+bot.run('NzQ1NzA3ODAwNTcwNjI2MTQ5.Xz1sgg.7drNBQmVg1eyrKD2F_WESEv3Q3k')
