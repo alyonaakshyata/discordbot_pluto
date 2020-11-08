@@ -153,7 +153,10 @@ async def chng_pr():
                 'with Jelly', 'with Lexii', 
                 'with Gangu', 'with ASM',
                 'with Triggered', 'with Toxic',
-                'with Notty Bot']
+                'with Notty Bot', 'with Bye', 
+                'with Nutella', 'with SirSaySomething', 
+                'with Museical', 'with Patanjali', 
+                'with Sugar.rush']
 
     while not bot.is_closed():
         status = random.choice(statuses)
