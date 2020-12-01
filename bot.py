@@ -147,7 +147,7 @@ async def help(ctx):
 async def chng_pr():
     await bot.wait_until_ready()
 
-    statuses = ['.help', 'Being a good bot',
+    statuses = ['.help', 'being a good bot',
                 'Having fun', 'with Softie', 
                 'with Corvus', 'with 19Stars', 
                 'with Jelly', 'with Lexii', 
@@ -155,8 +155,9 @@ async def chng_pr():
                 'with Triggered', 'with Toxic',
                 'with Notty Bot', 'with Bye', 
                 'with Nutella', 'with SirSaySomething', 
-                'with Museical', 'with Patanjali', 
-                'with Sugar.rush']
+                'with Museical', 'with Yash', 
+                'with Sugar.rush', 'with Lucifer',
+                'with DMW']
 
     while not bot.is_closed():
         status = random.choice(statuses)
