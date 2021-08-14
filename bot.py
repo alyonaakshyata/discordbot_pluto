@@ -168,4 +168,4 @@ async def chng_pr():
 
 bot.loop.create_task(chng_pr())
 
-bot.run('NzQ1NzA3ODAwNTcwNjI2MTQ5.Xz1sgg.7drNBQmVg1eyrKD2F_WESEv3Q3k')
+bot.run('NzQ1NzA3ODAwNTcwNjI2MTQ5.Xz1sgg.FG_CZ9nY_vv_B2GsL-bvF7jm2_g')
