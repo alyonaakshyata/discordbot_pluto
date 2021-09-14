@@ -1,6 +1,9 @@
 import discord
+import youtube_dl
 import random
+import os
 from discord.ext import commands
+from discord.utils import get
 import asyncio
 
 bot = commands.Bot(command_prefix = '.')
@@ -10,6 +13,23 @@ bot.remove_command('help')
 @bot.event
 async def on_ready():
     print('Bot is ready.')
+
+
+@bot.command()
+@commands.is_owner()
+async def reload(ctx, cog):
+    try:
+        bot.unload_extension(f'cogs.{cog}')
+        bot.load_extension(f'cogs.{cog}')
+        await ctx.send(f'{cog} got reloaded:')
+    except Exception as e:
+        print(f'{cog} cannot be loaded:')
+        raise e 
+
+@bot.command()
+async def unload(ctx, extension):
+    bot.unload_extension(f'cogs.{extension}')
+
 
 @bot.event
 async def on_member_join(member):
@@ -29,8 +49,6 @@ async def _8ball(ctx, *, question):
     responses = ['As I see it, yes.',
                  'Ask again later.',
                  'Better not tell you now.',
-                 'Of course.',
-                 'Absolutely.',
                  'Cannot predict now.',
                  'Concentrate and ask again.',
                  'Don’t count on it.',
@@ -51,31 +69,6 @@ async def _8ball(ctx, *, question):
                  'You may rely on it.']
     await ctx.send(f'Question: {question}\nAnswer: {random.choice(responses)}')
 
-@bot.command()
-async def clear(ctx, amount = 5):
-    await ctx.channel.purge(limit = amount)
-
-@bot.command()
-async def kick(ctx, member : discord.Member, *, reason = None):
-    await member.kick(reason=reason)
-
-@bot.command()
-async def ban(ctx, member : discord.Member, *, reason = None):
-    await member.ban(reason=reason)
-    await ctx.send(f'Banned {member.mention}')
-
-@bot.command()
-async def unban(ctx, *, member):
-    banned_users = await ctx.guild.bans()
-    member_name, member_discriminator = member.split('#')
-
-    for ban_entry in banned_users:
-        user = ban_entry.user
-
-        if(user.name, user.discriminator) == (member_name, member_discriminator):
-            await ctx.guild.unban(user)
-            await ctx.send(f'Unbanned {user.mention}')
-            return
 
 @bot.command(aliases=['ui','Userinfo','UserInfo','UI'])
 async def userinfo(ctx, member : discord.Member = None):
@@ -109,7 +102,7 @@ async def userinfo(ctx, member : discord.Member = None):
     embed.add_field(name = 'Bot?', value = member.bot)
 
     await ctx.send(embed = embed)
-    
+
 @bot.command()
 async def avatar(ctx, member : discord.Member = None):
     
@@ -123,8 +116,8 @@ async def avatar(ctx, member : discord.Member = None):
     embed.set_author(name = f'{member}', icon_url = member.avatar_url)
     embed.set_image(url = member.avatar_url)
     
-    await ctx.send(embed = embed)        
-    
+    await ctx.send(embed = embed)    
+
 
 @bot.command()
 async def help(ctx):
@@ -140,24 +133,18 @@ async def help(ctx):
     embed.add_field(name = '.clear', value = 'Clears the number of specified messages', inline = False)
     embed.add_field(name = '.userinfo', value = 'Shows information about the user or about the user mentioned', inline = False)
 
-
     await ctx.send(embed=embed)
-   
 
 async def chng_pr():
     await bot.wait_until_ready()
 
-    statuses = ['.help', 'being a good bot',
-                'Having fun', 'with Softie', 
-                'with Corvus', 'with 19Stars', 
-                'with Jelly', 'with Lexii', 
-                'with Gangu', 'with ASM',
-                'with Triggered', 'with Toxic',
-                'with Notty Bot', 'with Bye', 
-                'with Nutella', 'with SirSaySomething', 
-                'with Museical', 'with Yash', 
-                'with Sugar.rush', 'with Lucifer',
-                'with DMW', 'with Duke']
+    statuses = ['.help', 'Being a good bot', 
+                'Having fun', 'Playing with Softie',
+                'Playing with Corvus', 'Playing with 19Stars', 
+                'Playing with Jelly', 'Playing with Lexii', 
+                'Playing with Gangu', 'Playing with ASM',
+                'Playing with Triggered', 'Playing with Toxic',
+                'Playing with Notty Bot']
 
     while not bot.is_closed():
         status = random.choice(statuses)
@@ -167,5 +154,114 @@ async def chng_pr():
         await asyncio.sleep(15)
 
 bot.loop.create_task(chng_pr())
+
+@bot.command(pass_content = True, aliases = ['j'])
+async def join(ctx):
+    global voice
+    channel = ctx.message.author.voice.channel
+    voice = get(bot.voice_clients, guild = ctx.guild)
+
+    if voice and voice.is_connected():
+        await voice.move_to(channel)
+    else:
+        voice = await channel.connect()
+    
+    await voice.disconnect()
+
+    if voice and voice.is_connected():
+        await voice.move_to(channel)
+    else:
+        voice = await channel.connect()
+        print(f"The bot is connected to {channel}\n")
+    
+    await ctx.send(f"Pluto has joined {channel}")
+
+@bot.command(pass_content = True, aliases = ['l'])
+async def leave(ctx):
+    if voice and voice.is_connected():
+        await voice.disconnect()
+        print(f"The bot has left {channel}")
+        await ctx.send(f"Pluto has left {channel}")
+    else:
+        print("Asked to leave channel where the bot was not in")
+        await ctx.send(f"Pluto is not in that channel")
+    
+
+@bot.command(pass_content = True, aliases = ['p'])
+async def play(ctx, url: str):
+    song_there = os.path.isfile("song.mp3")
+    try:
+        if song_there:
+            os.remove("song.mp3")
+            print("Removed old song file")
+    except PermissionError:
+        print("Trying to delete song file, but it's being played")
+        await ctx.send("Oh no! The song is being played")
+        return
+
+    await ctx.send("Getting things ready now")
+
+    voice = get(bot.voice_clients, guild = ctx.guild)
+
+    ydl_opts = {
+        'format': 'beastaudio/best',
+        'postprocessors': [{
+            'key': 'FFmpegExtractAudio',
+            'preferredcodec': 'mp3',
+            'preferredquality': '192',
+        }],
+    }
+
+    with youtube_dl.YoutubeDL(ydl_opts) as ydl:
+        print("Dowloading audio now\n")
+        ydl.download([url])
+        
+    for file in os.listdir("./"):
+        if file.endswith(".mp3"):
+            name = fileprint(f"Renamed File: {file}\n")
+            os.rename(file, "song.mp3")
+        
+    voice.play(discord.FFmpegPCMAudio("song.mp3"), after = lambda e: print(f"{name} has finished playing"))
+    voice.source = discord.PCMVolumeTransformer(voice.source)
+    voice.source.volume = 0.07
+
+    nname = name.rsplit("-", 2)
+    await ctx.send(f"Playing: {nname[0]}")
+    print("Playing\n")
+
+
+
+
+'''
+@bot.event
+async def on_raw_reaction_add(payload):
+    message_id = payload.message_id
+    if message_id == 753867663373238344:
+        guild_id = payload.guild_id
+        guild = discord.utils.find(lambda g : g.id == guild_id, bot.guilds)
+
+        if payload.emo ji.name == 'a':
+            print('role1')
+        elif payload.emoji.name == 'b':
+            role = discord.utils.get(guild.roles, name = 'role 2')
+        else:
+            role = discord.utils.get(guild.roles, name = payload.emoji.name)
+
+        if role is not None:
+            print(role.name)
+
+@bot.event
+async def on_raw_reaction_remove(payload):
+    pass
+
+for cog in os.listdir('.\\cogs'):
+    if cog.endswith('.py'):
+        try:
+            cog = f"cogs.{cog.replace('.py', '')}"
+            bot.load_extension(cog)
+        except Exception as e:
+            print(f'{cog} cannot be loaded:')
+            raise e 
+'''
 
 bot.run('NzQ1NzA3ODAwNTcwNjI2MTQ5.Xz1sgg.FG_CZ9nY_vv_B2GsL-bvF7jm2_g')
