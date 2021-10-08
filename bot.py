@@ -1,5 +1,5 @@
 import discord
-import youtube_dl
+#import youtube_dl
 import random
 import os
 from discord.ext import commands
@@ -155,6 +155,7 @@ async def chng_pr():
 
 bot.loop.create_task(chng_pr())
 
+'''
 @bot.command(pass_content = True, aliases = ['j'])
 async def join(ctx):
     global voice
@@ -228,7 +229,7 @@ async def play(ctx, url: str):
     nname = name.rsplit("-", 2)
     await ctx.send(f"Playing: {nname[0]}")
     print("Playing\n")
-
+'''
 
 
 
