@@ -266,4 +266,4 @@ for cog in os.listdir('.\\cogs'):
             raise e 
 '''
 
-bot.run('NzQ1NzA3ODAwNTcwNjI2MTQ5.Xz1sgg.FG_CZ9nY_vv_B2GsL-bvF7jm2_g')
+bot.run('')
